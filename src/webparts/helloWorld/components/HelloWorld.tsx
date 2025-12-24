@@ -8,7 +8,7 @@ export default class HelloWorld extends React.Component<IHelloWorldProps> {
     const {
       description,
       isDarkTheme,
-      environmentMessage,
+      // environmentMessage,
       hasTeamsContext,
       userDisplayName
     } = this.props;
@@ -18,7 +18,7 @@ export default class HelloWorld extends React.Component<IHelloWorldProps> {
         <div className={styles.welcome}>
           <img alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
           <h2>Well done, {escape(userDisplayName)}!</h2>
-          <div>{environmentMessage}</div>
+          {/* <div>{environmentMessage}</div> */}
           <div>Web part property value: <strong>{escape(description)}</strong></div>
         </div>
         <div>

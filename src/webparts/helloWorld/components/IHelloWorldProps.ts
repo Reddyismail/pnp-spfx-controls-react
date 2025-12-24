@@ -1,7 +1,7 @@
 export interface IHelloWorldProps {
   description: string;
   isDarkTheme: boolean;
-  environmentMessage: string;
+  // environmentMessage: string;
   hasTeamsContext: boolean;
   userDisplayName: string;
 }

@@ -19,7 +19,13 @@
     "@microsoft/sp-office-ui-fabric-core": "1.20.0",
     "@microsoft/sp-property-pane": "1.20.0",
     "@microsoft/sp-webpart-base": "1.20.0",
+    "@pnp/core": "^4.17.0",
+    "@pnp/logging": "^4.17.0",
+    "@pnp/queryable": "^4.17.0",
+    "@pnp/sp": "^4.17.0",
     "@pnp/spfx-controls-react": "3.23.0",
+    "@pnp/spfx-property-controls": "^3.22.0",
+    "bootstrap": "^5.3.8",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "tslib": "2.3.1"

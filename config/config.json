@@ -17,12 +17,22 @@
           "manifest": "./src/webparts/accordion/AccordionWebPart.manifest.json"
         }
       ]
+    },
+    "column-picker-and-list-view-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/columnPickerAndListView/ColumnPickerAndListViewWebPart.js",
+          "manifest": "./src/webparts/columnPickerAndListView/ColumnPickerAndListViewWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "HelloWorldWebPartStrings": "lib/webparts/helloWorld/loc/{locale}.js",
     "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
-    "AccordionWebPartStrings": "lib/webparts/accordion/loc/{locale}.js"
+    "AccordionWebPartStrings": "lib/webparts/accordion/loc/{locale}.js",
+    "ColumnPickerAndListViewWebPartStrings": "lib/webparts/columnPickerAndListView/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
   }
 }
