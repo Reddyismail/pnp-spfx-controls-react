@@ -25,6 +25,14 @@
           "manifest": "./src/webparts/columnPickerAndListView/ColumnPickerAndListViewWebPart.manifest.json"
         }
       ]
+    },
+    "field-collection-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/fieldCollection/FieldCollectionWebPart.js",
+          "manifest": "./src/webparts/fieldCollection/FieldCollectionWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -33,6 +41,7 @@
     "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
     "AccordionWebPartStrings": "lib/webparts/accordion/loc/{locale}.js",
     "ColumnPickerAndListViewWebPartStrings": "lib/webparts/columnPickerAndListView/loc/{locale}.js",
-    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js",
+    "FieldCollectionWebPartStrings": "lib/webparts/fieldCollection/loc/{locale}.js"
   }
 }
