@@ -8,26 +8,44 @@ import '@pnp/sp/lists';
 import '@pnp/sp/items';
 // import { sp } from "@pnp/sp/presets/all";
 
+//Animation Related Imports
+import { AnimatedDialog } from "@pnp/spfx-controls-react/lib/AnimatedDialog";
+import { DialogType, DialogFooter } from '@fluentui/react/lib/Dialog';
+// import { PrimaryButton, DefaultButton } from '@fluentui/react/lib/Button';
+
 interface IFeedbackItem {
   Title: string;
   Name: string;
   FeedBack: string;
   Email: string;
   Id?: number;
+
 }
 
 interface IState {
   collectionData: IFeedbackItem[];
+  oldCollectionData: IFeedbackItem[];
   panelOpen: boolean; // Track panel open state
+  showAnimatedDialog?: boolean;
+}
+interface IDialogContentProps {
+  type: number;
+  title: string;
+  subText: string;
 }
 
+interface IModalProps {
+  isDarkOverlay: boolean;
+}
 export default class FieldCollection extends React.Component<IFieldCollectionProps, IState> {
 
   constructor(props: IFieldCollectionProps) {
     super(props);
     this.state = {
       collectionData: [],
-      panelOpen: true // open panel by default
+      oldCollectionData: [],
+      panelOpen: true,// open panel by default
+      showAnimatedDialog: false
     };
 
   }
@@ -62,34 +80,67 @@ export default class FieldCollection extends React.Component<IFieldCollectionPro
 
   private async saveListData(items: IFeedbackItem[]) {
     try {
-      for (const item of items) {
-        if (item.Id) {
-          console.log("Updating item with ID:", item.Id);
-          await this.props.sp.web.lists.getByTitle('FeedBack').items.getById(item.Id).update({
-            Title: item.Title,
-            Name: item.Name,
-            FeedBack: item.FeedBack,
-            EmaiId: item.Email
-          });
-        } else {
-          console.log("Updating item with ID:", item.Id);
-          await this.props.sp.web.lists.getByTitle('FeedBack').items.add({
-            Title: item.Title,
-            Name: item.Name,
-            FeedBack: item.FeedBack,
-            EmaiId: item.Email
-          });
+      if (this.state.collectionData.length > items.length) {
+        const oldItems = this.state.collectionData;
+
+        // 🔍 find deleted items
+        const deletedItems = oldItems.filter(oldItem =>
+          !items.some(items => items.Id === oldItem.Id)
+        );
+        for (const delItem of deletedItems) {
+          await this.props.sp.web.lists.getByTitle('FeedBack').items.getById(delItem.Id).delete();
+        }
+      } else {
+        for (const item of items) {
+          if (item.Id) {
+            console.log("Updating item with ID:", item.Id);
+            await this.props.sp.web.lists.getByTitle('FeedBack').items.getById(item.Id).update({
+              Title: item.Title,
+              Name: item.Name,
+              FeedBack: item.FeedBack,
+              EmaiId: item.Email
+            });
+          }
+          else {
+            console.log("Updating item with ID:", item.Id);
+            await this.props.sp.web.lists.getByTitle('FeedBack').items.add({
+              Title: item.Title,
+              Name: item.Name,
+              FeedBack: item.FeedBack,
+              EmaiId: item.Email
+            });
+          }
         }
       }
+
+
+
       void this.getListData();
+      //this for dilogbox auto close
+      setTimeout(() => {
+        this.setState({ showAnimatedDialog: false });
+      })
     } catch (error) {
       console.error("Error saving list data:", error);
     }
   }
 
+
+  //Animated Dialog Close Handler
+
+  private animatedDialogContentProps: IDialogContentProps = {
+
+    type: DialogType.normal,
+    title: 'Data Saved',
+    subText: 'Succesfully saved the data to SharePoint list!',
+  };
+
+  private animatedModalProps: IModalProps = {
+    isDarkOverlay: true
+  };
   public render(): React.ReactElement<IFieldCollectionProps> {
     const { description, isDarkTheme, environmentMessage, hasTeamsContext, userDisplayName } = this.props;
-
+    //console.log(this.state.collectionData)
     return (
       <section className={`${styles.fieldCollection} ${hasTeamsContext ? styles.teams : ''}`}>
         <div className={styles.welcome}>
@@ -109,7 +160,7 @@ export default class FieldCollection extends React.Component<IFieldCollectionPro
             label="Fields Collection"
             manageBtnLabel="Manage"
             value={this.state.collectionData}
-            panelHeader="Manage va  lues"
+            panelHeader="Manage values"
             itemsPerPage={5}
             context={this.props.context}
             // panelOpen={this.state.panelOpen} // Automatically open panel
@@ -120,13 +171,29 @@ export default class FieldCollection extends React.Component<IFieldCollectionPro
               { id: "Email", title: "Email", type: CustomCollectionFieldType.string }
             ]}
             onChanged={async (value: IFeedbackItem[]) => {
-              this.setState({ collectionData: value });
+              this.setState({ collectionData: value }, () => {
+                this.setState({ showAnimatedDialog: true });
+              });
               await this.saveListData(value);
             }}
+
             executeFiltering={(searchFilter: string, item: any) => {
               return item.Title?.toLowerCase().includes(searchFilter.toLowerCase());
             }}
+
+
           />
+          <AnimatedDialog
+            hidden={!this.state.showAnimatedDialog}
+            onDismiss={() => { this.setState({ showAnimatedDialog: false }); }}
+            dialogContentProps={this.animatedDialogContentProps}
+            modalProps={this.animatedModalProps}
+          >
+            <DialogFooter>
+              {/* <PrimaryButton onClick={() => { this.setState({ showAnimatedDialog: false }); }} text="Yes" />
+              <DefaultButton onClick={() => { this.setState({ showAnimatedDialog: false }); }} text="No" /> */}
+            </DialogFooter>
+          </AnimatedDialog>
         </div>
       </section>
     );
