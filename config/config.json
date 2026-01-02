@@ -33,6 +33,14 @@
           "manifest": "./src/webparts/fieldCollection/FieldCollectionWebPart.manifest.json"
         }
       ]
+    },
+    "pagination-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/pagination/PaginationWebPart.js",
+          "manifest": "./src/webparts/pagination/PaginationWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
@@ -42,6 +50,7 @@
     "AccordionWebPartStrings": "lib/webparts/accordion/loc/{locale}.js",
     "ColumnPickerAndListViewWebPartStrings": "lib/webparts/columnPickerAndListView/loc/{locale}.js",
     "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js",
-    "FieldCollectionWebPartStrings": "lib/webparts/fieldCollection/loc/{locale}.js"
+    "FieldCollectionWebPartStrings": "lib/webparts/fieldCollection/loc/{locale}.js",
+    "PaginationWebPartStrings": "lib/webparts/pagination/loc/{locale}.js"
   }
 }
